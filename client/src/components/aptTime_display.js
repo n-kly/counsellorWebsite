@@ -1,6 +1,6 @@
 import React from 'react'
 
-const aptTime_display = () => {
+const AptTime_display = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const aptTime_display = () => {
     )
 }
 
-export default aptTime_display
+export default AptTime_display

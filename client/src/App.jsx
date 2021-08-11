@@ -1,7 +1,10 @@
+import TextForm from "./components/TextForm";
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 function App() {
   return (
     <div className="Container">
-      <h1>Test</h1>
+      <TextForm/>
     </div>
   );
 }
