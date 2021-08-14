@@ -1,0 +1,32 @@
+import React from 'react';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(advancedFormat)
+
+const TimeDisplay = ({date}) => {
+    date = dayjs(date).utc().hour(13).minute(30).second(0)
+
+    return (
+        <div className='timeBox'>
+            <h1 className="timeTitle">Your appointment is at</h1>
+            <div className="localTime">
+                <h1 className="localTimeTitle">Local time</h1>
+                {dayjs(date).local().format('MMMM D, h:mm A')}<br/>
+                {"GMT"+dayjs(date).local().format('Z (z)')}
+            </div> <br />
+            <div className="ourTime">
+                <h1 className="ourTimeTitle">Our time</h1>
+                {dayjs(date).tz("America/Chicago").format('MMMM D, h:mm A')}<br />
+                {"GMT"+dayjs(date).tz("America/Chicago").format('Z (z)')}
+            </div>
+        </div>
+    )
+}
+
+export default TimeDisplay
+

@@ -12,13 +12,17 @@ router.get('/read', (req,res) => {
 
 // Create
 router.post('/create',(req,res)=>{
-    const uniName = req.body.uniName;
-    const uniRepName = req.body.uniRepName;
-    const uniRepJobTitle = req.body.uniRepJobTitle;
-    const uniRepEmail = req.body.uniRepEmail;
-    const uniRegion = req.body.uniRegion;
+    const date = req.body.date
+    const status = req.body.status;
+    const uniName = req.body.booking.uniName;
+    const uniRepName = req.body.booking.uniRepName;
+    const uniRepJobTitle = req.body.booking.uniRepJobTitle;
+    const uniRepEmail = req.body.booking.uniRepEmail;
+    const uniRegion = req.body.booking.uniRegion;
 
     const newBooking = new bookingDateInfo({
+        date:date,
+        status:status,
         booking:{
             uniName,
             uniRepName,

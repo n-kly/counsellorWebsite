@@ -1,0 +1,68 @@
+.formAlign{
+    padding: 1rem;
+    width:40rem;
+}
+
+.timeBox{
+    text-align: center;
+    position: relative;
+    width: 38rem;
+    padding: 1rem;
+    margin: 2.5rem;
+    border: .3rem solid #ececec;
+    border-radius: 8px;
+    margin-right: 25rem;
+    margin-left: 1rem;
+    color: #212529;
+}
+
+.timeTitle{
+    /* text-decoration: underline; */
+    font-size: 1.5em;
+    font-weight: normal;
+    text-decoration-thickness: 0.1rem;
+}
+
+.localTime{
+    padding-top: 0.5rem;
+    
+    
+}
+
+.localTimeTitle{
+    text-decoration: underline;
+    font-size: 1.3em;
+    font-weight: lighter;
+    text-decoration-thickness: 0.1rem;
+    
+}
+
+.ourTime{
+    padding-top: 0.5rem;
+}
+
+.ourTimeTitle{
+    text-decoration: underline;
+    font-size: 1.3em;
+    font-weight: lighter; 
+    text-decoration-thickness: 0.1rem;
+    
+}
+
+.green{
+    background:green !important;
+}
+
+.alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    position: relative;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+}

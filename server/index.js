@@ -13,7 +13,6 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json({extended:true}));
 app.use(cors());
 
-
 // Routes
 import bookingRouter from './API/routes/booking.js';
 import counsRouter from './API/routes/couns.js';
@@ -27,7 +26,6 @@ const url = process.env.ATLAS_URI;
 mongoose.connect(url, {useNewUrlParser:true, useUnifiedTopology: true});
 const connection = mongoose.connection;
 connection.once('open', ()=> {console.log("Connected to MongoDB")});
-
 
 // Start listening
 const PORT = process.env.PORT || 5000;
