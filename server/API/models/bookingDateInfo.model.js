@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 mongoose.pluralize(null);
 
 const schema = mongoose.Schema({ //change true
-    date: {type:Date, required:false},
+    aptDate: {type:Date, required:false},
     status: {type:String, required:false},
     booking: {
         uniName: String,

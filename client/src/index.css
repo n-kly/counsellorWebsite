@@ -1,18 +1,27 @@
 .formAlign{
-    padding: 1rem;
-    width:40rem;
+    padding: 2em 1em 2em 1em;
+    width: 40rem;
+    max-width: 100%;
+    margin: auto;
+}
+
+.calendarAlign{
+    padding: 1em 1em 3em 1em;
+    width: 38rem;
+    max-width: 100%;
+    margin: auto;
 }
 
 .timeBox{
     text-align: center;
     position: relative;
     width: 38rem;
+    max-width: 100%;
     padding: 1rem;
-    margin: 2.5rem;
+    margin: auto;
+    
     border: .3rem solid #ececec;
     border-radius: 8px;
-    margin-right: 25rem;
-    margin-left: 1rem;
     color: #212529;
 }
 
@@ -49,20 +58,43 @@
     
 }
 
-.green{
-    background:green !important;
-}
-
 .alert-success {
     color: #0f5132;
     background-color: #d1e7dd;
     border-color: #badbcc;
     position: relative;
     padding: 1rem;
-    margin-bottom: 1rem;
+    margin: 2.5rem;
     border: 1px solid transparent;
     border-radius: .25rem;
     font-size: 16px;
     font-weight: normal;
     text-align: center;
+    visibility: visible !important;
 }
+
+.hidden{
+    visibility: hidden;
+}
+
+
+.button {
+    padding: 2em 1em 2.5em 1em;
+    width: 30rem;
+    height: 4rem;
+    max-width: 100%;
+    margin: auto;
+}
+
+.center {
+    align-items: center;
+}
+
+.disableCalendar{
+    cursor: default !important;
+}
+
+.container{
+    overflow: hidden
+}
+

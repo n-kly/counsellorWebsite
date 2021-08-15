@@ -3,6 +3,13 @@ import bookingDateInfo from '../models/bookingDateInfo.model.js';
 
 const router = express.Router();
 
+// Get region data and date
+router.get('/readforform', (req,res) => {
+    bookingDateInfo.find({"aptDate" : {$gte: new Date()}},{aptDate:1, status:1, "booking.uniRegion":1})
+        .then(bookingDateInfo => res.json(bookingDateInfo))
+        .catch(err => res.status(400).json('Error: ' + err))
+})
+
 // Read
 router.get('/read', (req,res) => {
     bookingDateInfo.find()
@@ -12,7 +19,7 @@ router.get('/read', (req,res) => {
 
 // Create
 router.post('/create',(req,res)=>{
-    const date = req.body.date
+    const aptDate = req.body.aptDate
     const status = req.body.status;
     const uniName = req.body.booking.uniName;
     const uniRepName = req.body.booking.uniRepName;
@@ -21,7 +28,7 @@ router.post('/create',(req,res)=>{
     const uniRegion = req.body.booking.uniRegion;
 
     const newBooking = new bookingDateInfo({
-        date:date,
+        aptDate:aptDate,
         status:status,
         booking:{
             uniName,

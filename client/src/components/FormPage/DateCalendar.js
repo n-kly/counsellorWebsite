@@ -3,10 +3,11 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
 
-const DateCalendar = ({selectedDate,setSelectedDate}) => { 
+const DateCalendar = ({available,booked,regionBooked,success,selectedDate,setSelectedDate}) => { 
+
     return (
-        <div>
-            <Calendar 
+        <div className="calendarAlign disableCalendar">
+            <Calendar
                 onChange={setSelectedDate} 
                 value={selectedDate} 
                 maxDate={new Date(dayjs().add(11,'month').endOf('month').toDate())}
@@ -16,18 +17,23 @@ const DateCalendar = ({selectedDate,setSelectedDate}) => {
                 minDetail="year"
                 tileClassName={
                     ({date,view})=>{
-                        if(dayjs(date).format('DD/MM/YYYY')==="19/08/2021"){
-                            return 'green'
-                        }
+                        
                     }
                 }
                 tileDisabled={
                     ({date,view})=>{
-                        if(dayjs(date).format('DD/MM/YYYY')==="19/08/2021"){
-                            return 'green'
+                        if(success && (dayjs(date).format('DD/MM/YYYY')!==dayjs(selectedDate).format('DD/MM/YYYY'))){
+                            return true;
+                            
+                        } else {
+                            if(available.includes(dayjs(date).format('DD/MM/YYYY'))){
+                                return false;
+                                
+                            } else {
+                                return true;
+                            }
                         }
-                    }
-                    
+                    }  
                 }
             />
         </div>
