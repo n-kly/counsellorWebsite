@@ -3,10 +3,11 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
 
-const DateCalendar = ({available,booked,regionBooked,success,selectedDate,setSelectedDate}) => { 
+const DateCalendar = ({errors,validated,available,booked,regionBooked,success,selectedDate,setSelectedDate}) => { 
 
     return (
         <div className="calendarAlign disableCalendar">
+        <div className={validated&&!!errors.date?"invalidCalendar":''}>
             <Calendar
                 onChange={setSelectedDate} 
                 value={selectedDate} 
@@ -17,6 +18,20 @@ const DateCalendar = ({available,booked,regionBooked,success,selectedDate,setSel
                 minDetail="year"
                 tileClassName={
                     ({date,view})=>{
+                        if(available.includes(dayjs(date).format('DD/MM/YYYY'))){
+                            return "available"
+
+                        } else if(booked.includes(dayjs(date).format('DD/MM/YYYY'))){
+                            return "booked"
+
+                        } else if(regionBooked.includes(dayjs(date).format('DD/MM/YYYY'))){
+                            return "regionBooked"
+
+                        } else if(date>new Date()){
+                            return "unavailable"
+                        } else {
+                            return "past"
+                        }
                         
                     }
                 }
@@ -36,6 +51,8 @@ const DateCalendar = ({available,booked,regionBooked,success,selectedDate,setSel
                     }  
                 }
             />
+            </div>
+            <span className="invalidText">{errors.date}</span>
         </div>
     )
 }
