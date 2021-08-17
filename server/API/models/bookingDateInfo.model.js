@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
-mongoose.pluralize(null);
+mongoose.pluralize(null); // Prevent database from pluralizing
 
-const schema = mongoose.Schema({ //change true
-    aptDate: {type:Date, required:false},
-    status: {type:String, required:false},
+const schema = mongoose.Schema({
+    aptDate: { type: Date, required: true },
+    status: { type: String, required: true },
     booking: {
         uniName: String,
         uniRepName: String,
         uniRepJobTitle: String,
         uniRepEmail: String,
-        uniRegion: String
+        uniRegion: String,
     },
 });
 

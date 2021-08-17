@@ -1,37 +1,39 @@
-import express from "express";
+import express from 'express';
 import bookingDateInfo from '../models/bookingDateInfo.model.js';
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Create nodemail transporter with gmail authorization
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        type: "OAUTH2",
+        type: 'OAUTH2',
         user: 'bishvirtualsignup@gmail.com',
         clientId: process.env.OAUTH_CLIENTID,
         clientSecret: process.env.OAUTH_CLIENT_SECRET,
         refreshToken: process.env.OAUTH_REFRESH_TOKEN,
     },
-    tls:{
-        rejectUnauthorized:false 
-    }
+    tls: {
+        rejectUnauthorized: false,
+    },
 });
 
 const router = express.Router();
 
 // Get region data and date for calendar filtering
-router.get('/readforform', (req,res) => {
-    bookingDateInfo.find({"aptDate" : {$gte: new Date()}},{aptDate:1, status:1, "booking.uniRegion":1}).sort('aptDate')
-        .then(bookingDateInfo => res.json(bookingDateInfo))
-        .catch(err => res.status(400).json('Error: ' + err))
-})
+router.get('/readforform', (req, res) => {
+    bookingDateInfo.find({ aptDate: { $gte: new Date() } },{ aptDate: 1, status: 1, 'booking.uniRegion': 1 })
+        .sort('aptDate')
+        .then((bookingDateInfo) => res.json(bookingDateInfo))
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 // Create a booking
-router.put('/create', (req,res)=> {
-    console.log("received")
-    const aptDate = req.body.aptDate
+router.put('/create', (req, res) => {
+    console.log('received');
+    const aptDate = req.body.aptDate;
     const status = req.body.status;
     const uniName = req.body.booking.uniName;
     const uniRepName = req.body.booking.uniRepName;
@@ -40,46 +42,53 @@ router.put('/create', (req,res)=> {
     const uniRegion = req.body.booking.uniRegion;
 
     const newBooking = {
-        aptDate:aptDate,
-        status:status,
-        booking:{
+        aptDate: aptDate,
+        status: status,
+        booking: {
             uniName,
             uniRepName,
             uniRepJobTitle,
             uniRepEmail,
             uniRegion,
-        }
+        },
     };
-    let mailOptions = {
-        from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
-        to: uniRepEmail,
-        subject: 'Your presentation information',
-        text: `Thank you for signing up ${uniRepName}!
-        Your presentation is at ${aptDate}`
-    };
+
     
-    transporter.sendMail(mailOptions,(err,info) =>{
-        if (err) {
-            console.log(err)
-        } else{
-            console.log('Message sent')
-        }
-    })
-    bookingDateInfo.findOneAndUpdate({"aptDate":aptDate},newBooking)
-        .then(()=> res.json('Booking created'))
-        .catch(err => res.status(400).json('Error: ' + err))
-})
 
-// Read
-router.get('/read', (req,res) => {
+    bookingDateInfo.findOneAndUpdate({ aptDate: aptDate }, newBooking)
+        .then(() => {
+            res.json('Booking created');
+            // Create mail 
+            let mailOptions = {
+                from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
+                to: uniRepEmail,
+                subject: 'Your presentation information',
+                text: `Thank you for signing up ${uniRepName}!
+                Your presentation is at ${aptDate}`,
+            };
+
+            // Send mail
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Message sent');
+                }
+            });
+        })
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
+
+// Read (OLD)
+router.get('/read', (req, res) => {
     bookingDateInfo.find()
-        .then(bookingDateInfo => res.json(bookingDateInfo))
-        .catch(err => res.status(400).json('Error: ' + err))
-})
+        .then((bookingDateInfo) => res.json(bookingDateInfo))
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
-// Create
-router.post('/create',(req,res)=>{
-    const aptDate = req.body.aptDate
+// Create (OLD)
+router.post('/create', (req, res) => {
+    const aptDate = req.body.aptDate;
     const status = req.body.status;
     const uniName = req.body.booking.uniName;
     const uniRepName = req.body.booking.uniRepName;
@@ -88,47 +97,45 @@ router.post('/create',(req,res)=>{
     const uniRegion = req.body.booking.uniRegion;
 
     const newBooking = new bookingDateInfo({
-        aptDate:aptDate,
-        status:status,
-        booking:{
+        aptDate: aptDate,
+        status: status,
+        booking: {
             uniName,
             uniRepName,
             uniRepJobTitle,
             uniRepEmail,
             uniRegion,
-        }
+        },
     });
 
     newBooking.save()
-        .then(()=> res.json('Booking created'))
-        .catch(err => res.status(400).json('Error: ' + err));
-})
+        .then(() => res.json('Booking created'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 // Delete
-router.delete('/delete/:id', (req,res) => {
+router.delete('/delete/:id', (req, res) => {
     bookingDateInfo.findByIdAndDelete(req.params.id)
         .then(() => res.json('Booking deleted'))
-        .catch(err => res.status(400).json('Error: ' + err))
-})
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 // Update
-router.patch('/update/:id', (req,res) => {
+router.patch('/update/:id', (req, res) => {
     bookingDateInfo.findById(req.params.id)
-        .then(bookingDateInfo => {
+        .then((bookingDateInfo) => {
             bookingDateInfo.booking.uniName = req.body.uniName;
             bookingDateInfo.booking.uniRepName = req.body.uniRepName;
             bookingDateInfo.booking.uniRepJobTitle = req.body.uniRepJobTitle;
             bookingDateInfo.booking.uniRepEmail = req.body.uniRepEmail;
             bookingDateInfo.booking.uniRegion = req.body.uniRegion;
 
-            bookingDateInfo.save()
+            bookingDateInfo
+                .save()
                 .then(() => res.json('Booking updated'))
-                .catch(err=> res.status(400).json('Error: ' + err));
-
+                .catch((err) => res.status(400).json('Error: ' + err));
         })
-        .catch(err=> res.status(400).json('Error: ' + err));
-})
-
-
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 export default router;

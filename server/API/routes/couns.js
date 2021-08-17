@@ -1,17 +1,17 @@
-import express from "express";
-import counsellorEmail from "../models/counsellorEmail.model.js";
+import express from 'express';
+import counsellorEmail from '../models/counsellorEmail.model.js';
 
 const router = express.Router();
 
 // Read
-router.get('/read', (req,res) => {
+router.get('/read', (req, res) => {
     counsellorEmail.find()
-        .then(counsellorEmail => res.json(counsellorEmail))
-        .catch(err => res.status(400).json('Error: ' + err))
-})
+        .then((counsellorEmail) => res.json(counsellorEmail))
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 // Create
-router.post('/create',(req,res)=>{
+router.post('/create', (req, res) => {
     const name = req.body.name;
     const counsEmail = req.body.counsEmail;
 
@@ -21,15 +21,15 @@ router.post('/create',(req,res)=>{
     });
 
     newCounsEmail.save()
-        .then(()=> res.json('Counsellor email added'))
-        .catch(err => res.status(400).json('Error: ' + err));
-})
+        .then(() => res.json('Counsellor email added'))
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 // Delete
-router.delete('/delete/:id', (req,res) => {
+router.delete('/delete/:id', (req, res) => {
     counsellorEmail.findByIdAndDelete(req.params.id)
         .then(() => res.json('Exercise deleted'))
-        .catch(err => res.status(400).json('Error: ' + err))
-})
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 export default router;
