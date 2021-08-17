@@ -1,5 +1,23 @@
 import express from "express";
 import bookingDateInfo from '../models/bookingDateInfo.model.js';
+import nodemailer from 'nodemailer'
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        type: "OAUTH2",
+        user: 'bishvirtualsignup@gmail.com',
+        clientId: process.env.OAUTH_CLIENTID,
+        clientSecret: process.env.OAUTH_CLIENT_SECRET,
+        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+    },
+    tls:{
+        rejectUnauthorized:false 
+    }
+});
 
 const router = express.Router();
 
@@ -12,6 +30,7 @@ router.get('/readforform', (req,res) => {
 
 // Create a booking
 router.put('/create', (req,res)=> {
+    console.log("received")
     const aptDate = req.body.aptDate
     const status = req.body.status;
     const uniName = req.body.booking.uniName;
@@ -20,7 +39,7 @@ router.put('/create', (req,res)=> {
     const uniRepEmail = req.body.booking.uniRepEmail;
     const uniRegion = req.body.booking.uniRegion;
 
-    const newBooking = new bookingDateInfo({
+    const newBooking = {
         aptDate:aptDate,
         status:status,
         booking:{
@@ -30,8 +49,22 @@ router.put('/create', (req,res)=> {
             uniRepEmail,
             uniRegion,
         }
-    });
-
+    };
+    let mailOptions = {
+        from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
+        to: uniRepEmail,
+        subject: 'Your presentation information',
+        text: `Thank you for signing up ${uniRepName}!
+        Your presentation is at ${aptDate}`
+    };
+    
+    transporter.sendMail(mailOptions,(err,info) =>{
+        if (err) {
+            console.log(err)
+        } else{
+            console.log('Message sent')
+        }
+    })
     bookingDateInfo.findOneAndUpdate({"aptDate":aptDate},newBooking)
         .then(()=> res.json('Booking created'))
         .catch(err => res.status(400).json('Error: ' + err))
@@ -95,5 +128,7 @@ router.patch('/update/:id', (req,res) => {
         })
         .catch(err=> res.status(400).json('Error: ' + err));
 })
+
+
 
 export default router;

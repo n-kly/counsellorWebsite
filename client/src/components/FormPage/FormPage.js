@@ -57,13 +57,15 @@ function FormPage() {
     }
   }
 
+  // eslint-disable-next-line
   useEffect(async () => {
     if (formData.uniRegion!==''){
       async function getRegionData() {
         let response = await axios.get('http://localhost:5000/booking/readforform')
         return response
       }
-
+      
+      // eslint-disable-next-line
       calendarData = (await getRegionData()).data
      
       available = []
