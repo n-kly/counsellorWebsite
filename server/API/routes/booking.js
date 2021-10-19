@@ -22,9 +22,11 @@ let transporter = nodemailer.createTransport({
 
 const router = express.Router();
 
-// Get region data and date for calendar filtering
+// Get data for calendar formatting
 router.get('/readforform', (req, res) => {
-    bookingDateInfo.find({ aptDate: { $gte: new Date() } },{ aptDate: 1, status: 1, 'booking.uniRegion': 1 })
+    bookingDateInfo.find(
+        { aptDate: { $gte: new Date() } },
+        { aptDate: 1, status: 1, 'booking.uniRegion': 1 })
         .sort('aptDate')
         .then((bookingDateInfo) => res.json(bookingDateInfo))
         .catch((err) => res.status(400).json('Error: ' + err));
@@ -53,9 +55,9 @@ router.put('/create', (req, res) => {
         },
     };
 
-    
-
-    bookingDateInfo.findOneAndUpdate({ aptDate: aptDate }, newBooking)
+    bookingDateInfo.findOneAndUpdate(
+        { aptDate: aptDate }, 
+        newBooking)
         .then(() => {
             res.json('Booking created');
             // Create mail 
@@ -79,15 +81,18 @@ router.put('/create', (req, res) => {
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-// Read (OLD)
-router.get('/read', (req, res) => {
-    bookingDateInfo.find()
+// Get data for display
+router.get('/readfordisplay', (req, res) => {
+    bookingDateInfo.find(
+        { aptDate: { $gte: new Date() }, status:"Booked"},
+        { aptDate: 1, 'booking': 1 })
+        .sort('aptDate')
         .then((bookingDateInfo) => res.json(bookingDateInfo))
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-// Create (OLD)
-router.post('/create', (req, res) => {
+// Manually create for insomnia
+router.post('/createm', (req, res) => {
     const aptDate = req.body.aptDate;
     const status = req.body.status;
     const uniName = req.body.booking.uniName;
@@ -110,31 +115,6 @@ router.post('/create', (req, res) => {
 
     newBooking.save()
         .then(() => res.json('Booking created'))
-        .catch((err) => res.status(400).json('Error: ' + err));
-});
-
-// Delete
-router.delete('/delete/:id', (req, res) => {
-    bookingDateInfo.findByIdAndDelete(req.params.id)
-        .then(() => res.json('Booking deleted'))
-        .catch((err) => res.status(400).json('Error: ' + err));
-});
-
-// Update
-router.patch('/update/:id', (req, res) => {
-    bookingDateInfo.findById(req.params.id)
-        .then((bookingDateInfo) => {
-            bookingDateInfo.booking.uniName = req.body.uniName;
-            bookingDateInfo.booking.uniRepName = req.body.uniRepName;
-            bookingDateInfo.booking.uniRepJobTitle = req.body.uniRepJobTitle;
-            bookingDateInfo.booking.uniRepEmail = req.body.uniRepEmail;
-            bookingDateInfo.booking.uniRegion = req.body.uniRegion;
-
-            bookingDateInfo
-                .save()
-                .then(() => res.json('Booking updated'))
-                .catch((err) => res.status(400).json('Error: ' + err));
-        })
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 

@@ -34,6 +34,7 @@ function FormPage() {
 		uniRegion: '',
 	});
 
+
 	// Submission handler
 	const handleSubmit = (e) => { 
 		e.preventDefault();
@@ -58,10 +59,11 @@ function FormPage() {
 			setError(validateInfo(bookingDateInfoInstance));
 			setValidated(true); // Trigger validation styles
 		}};
+	
 
 	// eslint-disable-next-line
 	useEffect(async () => {
-		if (formData.uniRegion !== '') {
+		if (formData.uniRegion !== '') { // Prevent render on mount
 			async function getRegionData() { // Async to prevent stalling 
 				let response = await axios.get('http://localhost:5000/booking/readforform');
 				return response;
@@ -90,14 +92,18 @@ function FormPage() {
 						.format('DD/MM/YYYY');
 
 					if (index - 1 >= 0) {
-						if (calendarData[index - 1].status === 'Available' && dayjs(calendarData[index - 1]).isBetween(lowB,uppB,null,'[]')) { // Checks last available day
+						// Checks last available day
+						if (calendarData[index - 1].status === 'Available' && dayjs(calendarData[index - 1])
+						.isBetween(lowB,uppB,null,'[]')) { 
 							regionBooked.push(dayjs(calendarData[index - 1].aptDate).format('DD/MM/YYYY'));
-							calendarData[index - 1].status = 'Region booked'; // Prevent further formatting from applying to this date
+							calendarData[index - 1].status = 'Region booked'; // Prevent further formatting 
 						}
 					}
 
 					if (index + 1 <= calendarData.length - 1) {
-						if (calendarData[index + 1].status === 'Available' && dayjs(calendarData[index + 1]).isBetween(lowB,uppB,null,'[]')) { // Checks next available day
+						// Checks next available day
+						if (calendarData[index + 1].status === 'Available' && dayjs(calendarData[index + 1])
+						.isBetween(lowB,uppB,null,'[]')) { 
 							regionBooked.push(dayjs(calendarData[index + 1].aptDate).format('DD/MM/YYYY'));
 							calendarData[index + 1].status = 'Region booked';
 						}
@@ -123,6 +129,7 @@ function FormPage() {
 			setKey(!key); // Manually re-render
 		}
 	}, [formData.uniRegion, checkDate]); // Dependencies which, after change, will trigger the useEffect
+
 
 	return (
 		<div className='container'>

@@ -1,0 +1,38 @@
+.cardUni{
+    font-size: 1.5rem;
+    font-weight: 300; 
+}
+
+.cardRegion{
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.cardImage{
+    width: calc(100% + 2px);
+    border-radius: 0;
+    margin-left: -1px;
+}
+
+.cardDate{
+
+}
+
+.cardTitle{
+
+}
+
+.cardEmail{
+
+}
+
+.pad{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cardButton{
+    width: 100%;
+}
+
