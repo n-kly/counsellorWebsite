@@ -1,3 +1,93 @@
 .nopad{
     padding: 0 0 0 0 !important;
 }
+
+.wCube{
+    position: absolute;
+    top:0;
+    left:0;
+    height:64px;
+    width:64px;
+    background-color: #f8f9fa;
+    z-index: 1;
+}
+
+.bars{
+    z-index: 2;
+    margin-right: 0;
+}
+
+.sidebar-active{
+    left: 0rem;
+    position: relative;
+    transition: 500ms;
+}
+
+.sidebar-inactive{
+    left: -15rem;
+    position: absolute;
+    transition: 500ms;
+}
+
+.burger{
+    width:40px;
+    height: 6px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 3px;
+    box-shadow: 0 2px 2px rgba(255,101,47,.2);
+    transition: all .5s ease-in-out;
+}
+
+.burger::before,.burger::after{
+    content:'';
+    position:absolute;
+    width:40px;
+    height: 6px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 3px;
+    box-shadow: 0 2px 2px rgba(255,101,47,.2);
+    transition: all .5s ease-in-out;
+}
+
+.burger::before {
+    transform: translateY(-12px);
+}
+
+.burger::after {
+    transform: translateY(12px);
+}
+
+.burger-close::before,.burger-close::after{
+    content:'';
+    position:absolute;
+    width:40px;
+    height: 6px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 3px;
+    box-shadow: 0 2px 2px rgba(255,101,47,.2);
+    transition: all .5s ease-in-out;
+}
+
+.burger-close{
+    transform: translateX(-50px);
+    background: transparent;
+    box-shadow: none;
+    width: 40px;
+    height: 6px;
+    border-radius: 3px;
+    transition: all .5s ease-in-out;
+}
+
+.burger-close::before{
+    transform: translateY(-12px);
+    transform: rotate(45deg) translate(35px, -35px);
+}
+.burger-close::after{
+    transform: translateY(12px);
+    transform: rotate(-45deg) translate(35px, 35px);
+}
+
+.burgerpad{
+    margin:1rem;
+    margin-left:0.5rem !important;
+}

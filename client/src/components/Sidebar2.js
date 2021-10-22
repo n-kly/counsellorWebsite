@@ -18,10 +18,16 @@ const Sidebar2 = () => {
 	const toggleSidebar = () => setSidebar(!sidebar); // Seperate function as bugfix
 
     return (
+        <>
+        <div className='wCube'></div>
         <div>
             <Navbar bg="light">
-                <Navbar.Brand as={Link} onClick={()=>{toggleSidebar()}}><FaBars/></Navbar.Brand>
-                    <Nav className="me-auto">
+                <Navbar.Brand className='bars' as={Link} onClick={()=>{toggleSidebar()}}>
+                    <div className='burgerpad'>
+                        <div className={!sidebar?'burger':'burger-close'}></div>
+                    </div>
+                </Navbar.Brand>
+                    <Nav className={sidebar?"me-auto sidebar-active":"me-auto sidebar-inactive"}>
                         <Nav.Link as={NavLink} to='/'>
                             <span><BsPencilSquare /> Form</span>
                         </Nav.Link>
@@ -45,12 +51,13 @@ const Sidebar2 = () => {
                                 </Nav.Link>
                             </NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link as={NavLink} to='/support' style={{'justify-content': 'end'}}>
-                            <span><AiOutlineQuestionCircle />Help</span>
+                        <Nav.Link as={NavLink} to='/support'>
+                            <span><AiOutlineQuestionCircle /> Help</span>
                         </Nav.Link>
                     </Nav>
             </Navbar>
         </div>
+        </>
     )
 }
 
