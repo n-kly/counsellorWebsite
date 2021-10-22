@@ -1,18 +1,19 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import './admin.css'
+import '../admin.css'
 import BCard from "./BCard";
+import BCardAdd from "./BCardAdd";
 
-const AdminPage = () => {
+const EditBookings = () => {
     const [booking, setBooking] = useState([])
 
+    // eslint-disable-next-line
     useEffect(async () => {
         async function getDisplayData() { // Async to prevent stalling 
             let response = await axios.get('http://localhost:5000/booking/readfordisplay');
             return response;
         }
         
-        // eslint-disable-next-line
         getDisplayData()
         .then((res)=>{
             setBooking(res.data);
@@ -21,21 +22,22 @@ const AdminPage = () => {
 
     useEffect(() => {
         console.log("rerender")
-    })
-    
+    })    
 
     return (
+        <>
         <div className='container'>
             <div className='row pad'>
                 {booking.map(instance=>{
-                    console.log(instance);
                     return(
-                      <BCard instance={instance}></BCard>  
+                      <BCard instance={instance} setBooking={setBooking}/>  
                     )
                 })}
+                <BCardAdd setBooking={setBooking}/>
             </div>
         </div>
+        </>
     );
 };
 
-export default AdminPage;
+export default EditBookings;

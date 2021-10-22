@@ -32,9 +32,18 @@ router.get('/readforform', (req, res) => {
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
+// Get data for display
+router.get('/readfordisplay', (req, res) => {
+    bookingDateInfo.find(
+        { aptDate: { $gte: new Date() }, status:"Booked"},
+        { aptDate: 1, 'booking': 1 })
+        .sort('aptDate')
+        .then((bookingDateInfo) => res.json(bookingDateInfo))
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
+
 // Create a booking
 router.put('/create', (req, res) => {
-    console.log('received');
     const aptDate = req.body.aptDate;
     const status = req.body.status;
     const uniName = req.body.booking.uniName;
@@ -81,17 +90,33 @@ router.put('/create', (req, res) => {
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-// Get data for display
-router.get('/readfordisplay', (req, res) => {
-    bookingDateInfo.find(
-        { aptDate: { $gte: new Date() }, status:"Booked"},
-        { aptDate: 1, 'booking': 1 })
-        .sort('aptDate')
-        .then((bookingDateInfo) => res.json(bookingDateInfo))
+// Edit a booking
+router.patch('/edit', (req, res) => {
+    bookingDateInfo.findById(req.body.id)
+        .then((bookingDateInfo) => {
+            bookingDateInfo.booking.uniName = req.body.booking.uniName;
+            bookingDateInfo.booking.uniRepName = req.body.booking.uniRepName;
+            bookingDateInfo.booking.uniRepJobTitle = req.body.booking.uniRepJobTitle;
+            bookingDateInfo.booking.uniRepEmail = req.body.booking.uniRepEmail;
+            bookingDateInfo.booking.uniRegion = req.body.booking.uniRegion;
+            bookingDateInfo.aptDate = req.body.aptDate;
+
+            bookingDateInfo.save()
+                .then(() => res.json('Booking updated'))
+                .catch((err) => res.status(400).json('Error: ' + err));
+        })
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-// Manually create for insomnia
+
+// Remove a booking
+router.delete('/remove', (req, res) => {
+    bookingDateInfo.findByIdAndDelete(req.body.id)
+        .then(() => {res.json('Booking deleted'); console.log})
+        .catch((err) => {res.status(400).json('Error: ' + err)});
+});
+
+// Manually create a booking for insomnia
 router.post('/createm', (req, res) => {
     const aptDate = req.body.aptDate;
     const status = req.body.status;
