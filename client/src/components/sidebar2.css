@@ -24,7 +24,7 @@
 }
 
 .sidebar-inactive{
-    left: -15rem;
+    left: -20rem;
     position: absolute;
     transition: 500ms;
 }
@@ -90,4 +90,20 @@
 .burgerpad{
     margin:1rem;
     margin-left:0.5rem !important;
+}
+
+.nav-text{
+    font-size: 1.3rem;
+    margin-right: 1rem;
+    margin-left:0.35rem;
+}
+
+.nav-div{
+    display: flex;
+    justify-content: center;
+}
+
+.incorrect{
+    color: #dc3545;
+    font-size: 80%;
 }

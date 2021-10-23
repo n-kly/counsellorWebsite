@@ -50,33 +50,45 @@ const BCardAdd = ({setBooking}) => {
         return response;
     }
 
-    function create(){
+    async function create(){
         if(!(Object.keys(validateInfo(bookingData,date)).length === 0)){
             setError(validateInfo(bookingData,date));
             setValidated(true);
         } else{
-            setValidated(false);
+            const token = localStorage.getItem('adminToken')
             
-            let bookingDateInfoInstance = {
-                aptDate: date,
-                status: 'Booked',
-                booking: {
-                    uniName: bookingData.uniName,
-                    uniRepName: bookingData.uniRepName,
-                    uniRepJobTitle: bookingData.uniRepJobTitle,
-                    uniRepEmail: bookingData.uniRepEmail,
-                    uniRegion: bookingData.uniRegion,
-                },
-            };
-            
-            axios.post('http://localhost:5000/booking/createm', bookingDateInfoInstance)
-            .then(()=>{
-                // eslint-disable-next-line
-                getDisplayData()
-                .then((res)=>{
-                    setBooking(res.data);
-                })
-            }).then(setShow(false));  
+            if(!!token){
+                const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
+                
+                if(verify){
+                    setValidated(false);
+                
+                    let bookingDateInfoInstance = {
+                        aptDate: date,
+                        status: 'Booked',
+                        booking: {
+                            uniName: bookingData.uniName,
+                            uniRepName: bookingData.uniRepName,
+                            uniRepJobTitle: bookingData.uniRepJobTitle,
+                            uniRepEmail: bookingData.uniRepEmail,
+                            uniRegion: bookingData.uniRegion,
+                        },
+                    };
+                    
+                    axios.post('http://localhost:5000/booking/createm', bookingDateInfoInstance)
+                    .then(()=>{
+                        // eslint-disable-next-line
+                        getDisplayData()
+                        .then((res)=>{
+                            setBooking(res.data);
+                        })
+                    }).then(setShow(false));  
+                } else{
+                    alert('Invalid authentication token')
+                }
+            } else{
+                alert('Please authenticate by logging in')
+            }
         }      
     }
 

@@ -50,40 +50,64 @@ const BCard = ({instance,setBooking}) => {
         return response;
     }
 
-    function edit(){
+    async function edit(){
         if(!(Object.keys(validateInfo(bookingData,date)).length === 0)){
             setError(validateInfo(bookingData,date));
             setValidated(true);
         } else{
-            setValidated(false);
+            const token = localStorage.getItem('adminToken')
             
-            let bookingDateInfoInstance = {
-                id:instance._id,
-                aptDate: date,
-                status: 'Booked',
-                booking: {
-                    uniName: bookingData.uniName,
-                    uniRepName: bookingData.uniRepName,
-                    uniRepJobTitle: bookingData.uniRepJobTitle,
-                    uniRepEmail: bookingData.uniRepEmail,
-                    uniRegion: bookingData.uniRegion,
-                },
-            };
+            if(!!token){
+                const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
+                
+                if(verify){
+                    setValidated(false);
+            
+                    let bookingDateInfoInstance = {
+                        id:instance._id,
+                        aptDate: date,
+                        status: 'Booked',
+                        booking: {
+                            uniName: bookingData.uniName,
+                            uniRepName: bookingData.uniRepName,
+                            uniRepJobTitle: bookingData.uniRepJobTitle,
+                            uniRepEmail: bookingData.uniRepEmail,
+                            uniRegion: bookingData.uniRegion,
+                        },
+                    };
 
-            axios.patch('http://localhost:5000/booking/edit', bookingDateInfoInstance);
-            setShow(false);    
+                    axios.patch('http://localhost:5000/booking/edit', bookingDateInfoInstance);
+                    setShow(false);  
+                } else{
+                    alert('Invalid authentication token')
+                }
+            } else{
+                alert('Please authenticate by logging in')
+            }   
         }      
     }
 
-    function remove(){
-        axios.delete('http://localhost:5000/booking/remove', {data: {id:instance._id}})
-        .then(()=>{
-            // eslint-disable-next-line
-            getDisplayData()
-            .then((res)=>{
-                setBooking(res.data);
-            })
-        }).then(setShow(false));  
+    async function remove(){
+        const token = localStorage.getItem('adminToken')
+            
+        if(!!token){
+            const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
+            
+            if(verify){
+                axios.delete('http://localhost:5000/booking/remove', {data: {id:instance._id}})
+                .then(()=>{
+                    // eslint-disable-next-line
+                    getDisplayData()
+                    .then((res)=>{
+                        setBooking(res.data);
+                    })
+                }).then(setShow(false));  
+            } else{
+                alert('Invalid authentication token')
+            }
+        } else{
+            alert('Please authenticate by logging in')
+        }
     }
 
     return (

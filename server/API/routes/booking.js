@@ -32,16 +32,6 @@ router.get('/readforform', (req, res) => {
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-// Get data for display
-router.get('/readfordisplay', (req, res) => {
-    bookingDateInfo.find(
-        { aptDate: { $gte: new Date() }, status:"Booked"},
-        { aptDate: 1, 'booking': 1 })
-        .sort('aptDate')
-        .then((bookingDateInfo) => res.json(bookingDateInfo))
-        .catch((err) => res.status(400).json('Error: ' + err));
-});
-
 // Create a booking
 router.put('/create', (req, res) => {
     const aptDate = req.body.aptDate;
@@ -87,6 +77,17 @@ router.put('/create', (req, res) => {
                 }
             });
         })
+        .catch((err) => res.status(400).json('Error: ' + err));
+});
+
+
+// Get data for display
+router.get('/readfordisplay', (req, res) => {
+    bookingDateInfo.find(
+        { aptDate: { $gte: new Date() }, status:"Booked"},
+        { aptDate: 1, 'booking': 1 })
+        .sort('aptDate')
+        .then((bookingDateInfo) => res.json(bookingDateInfo))
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 

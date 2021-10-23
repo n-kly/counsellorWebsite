@@ -20,10 +20,6 @@ const EditBookings = () => {
         })  
     }, [])
 
-    useEffect(() => {
-        console.log("rerender")
-    })    
-
     return (
         <>
         <div className='container'>

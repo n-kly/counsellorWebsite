@@ -15,9 +15,11 @@ app.use(cors());
 // Routes
 import bookingRouter from './API/routes/booking.js';
 import counsRouter from './API/routes/couns.js';
+import loginRouter from './API/routes/login.js'
 
 app.use('/booking', bookingRouter);
 app.use('/couns', counsRouter);
+app.use('/login', loginRouter)
 app.use('*', (req, res) => res.status(404).json({ error: 'Page not found' }));
 
 // Connect to database
