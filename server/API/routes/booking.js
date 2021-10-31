@@ -92,7 +92,7 @@ router.get('/readfordisplay', (req, res) => {
 });
 
 // Edit a booking
-router.patch('/edit', (req, res) => {
+router.patch('/editbooking', (req, res) => {
     bookingDateInfo.findById(req.body.id)
         .then((bookingDateInfo) => {
             bookingDateInfo.booking.uniName = req.body.booking.uniName;
@@ -113,8 +113,26 @@ router.patch('/edit', (req, res) => {
 // Remove a booking
 router.delete('/remove', (req, res) => {
     bookingDateInfo.findByIdAndDelete(req.body.id)
-        .then(() => {res.json('Booking deleted'); console.log})
+        .then(() => {res.json('Booking deleted');})
         .catch((err) => {res.status(400).json('Error: ' + err)});
+});
+
+// Edit dates
+router.post('/editcalendar', (req, res) =>{
+    let changeLog = req.body
+
+    let changes =  []
+    Object.keys(changeLog).forEach((key) => {
+        if(changeLog[key]==true){
+            changes.push({'insertOne':{"document":{aptDate:key,status:"Available"}}})
+        } else {
+            changes.push({'deleteOne':{"filter":{aptDate:key}}})
+        }
+    });
+
+    bookingDateInfo.bulkWrite(changes)
+        .then(() => {res.json('Dates updated');})
+        .catch((err) => {res.status(400).json('Error: ' + err)})   
 });
 
 // Manually create a booking for insomnia

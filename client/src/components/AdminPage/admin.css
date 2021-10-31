@@ -41,3 +41,28 @@
     justify-content: center;
     align-items: center;
 }
+
+.ccontainer {
+    margin-left: calc(50vw - 20rem);
+    margin-top: calc(50vh - 15rem);
+}
+
+.cbooked {
+    color: hsla(3, 100%, 20%, 1) !important;
+	background-color: rgba(255, 65, 54, 0.6) !important;
+}
+
+.cbooked:hover {
+	color: hsla(3, 100%, 20%, 1) !important;
+	background-color: rgba(255, 65, 54, 0.55) !important;
+}
+
+.cavailable {
+	color: hsla(127, 63%, 15%, 1) !important;
+	background-color: rgba(1, 255, 112, 0.7) !important;
+}
+
+.cavailable:hover {
+	color: hsla(127, 63%, 15%, 1) !important;
+	background-color: rgba(1, 255, 112, 0.5) !important;
+}

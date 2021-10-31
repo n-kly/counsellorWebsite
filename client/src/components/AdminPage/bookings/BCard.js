@@ -76,7 +76,7 @@ const BCard = ({instance,setBooking}) => {
                         },
                     };
 
-                    axios.patch('http://localhost:5000/booking/edit', bookingDateInfoInstance);
+                    axios.patch('http://localhost:5000/booking/editbooking', bookingDateInfoInstance);
                     setShow(false);  
                 } else{
                     alert('Invalid authentication token')

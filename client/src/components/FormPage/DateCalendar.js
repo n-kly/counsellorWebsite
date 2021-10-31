@@ -25,6 +25,7 @@ const DateCalendar = ({
 					next2Label=''
 					prev2Label=''
 					minDetail='year'
+					showNeighboringMonth='false'
 					tileClassName={({ date, view }) => { {/*Conditional formatting*/}
 						if (dayjs(date).format('DD/MM/YYYY') === dayjs(selectedDate).format('DD/MM/YYYY')) {
 							return 'selected';
