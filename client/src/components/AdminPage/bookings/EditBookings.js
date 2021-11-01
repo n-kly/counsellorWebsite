@@ -10,14 +10,11 @@ const EditBookings = () => {
     // eslint-disable-next-line
     useEffect(async () => {
         async function getDisplayData() { // Async to prevent stalling 
-            let response = await axios.get('http://localhost:5000/booking/readfordisplay');
-            return response;
+            let res = await axios.get('http://localhost:5000/booking/readfordisplay');
+            return res;
         }
         
-        getDisplayData()
-        .then((res)=>{
-            setBooking(res.data);
-        })  
+        getDisplayData().then((res)=>setBooking(res.data))  
     }, [])
 
     return (

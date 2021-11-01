@@ -46,8 +46,8 @@ const BCard = ({instance,setBooking}) => {
     }
 
     async function getDisplayData() { // Async to prevent stalling 
-        let response = await axios.get('http://localhost:5000/booking/readfordisplay');
-        return response;
+        let res = await axios.get('http://localhost:5000/booking/readfordisplay');
+        return res;
     }
 
     async function edit(){

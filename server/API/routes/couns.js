@@ -10,14 +10,32 @@ router.get('/read', (req, res) => {
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
+router.patch('/edit', (req, res) => {
+    console.log(req.body)
+    counsellorEmail.findById(req.body.id)
+        .then((counsellorEmail) => {
+            counsellorEmail.name = req.body.name;
+            counsellorEmail.counsEmail = req.body.counsEmail;
+            counsellorEmail.receiveEmail = req.body.receiveEmail;
+
+
+            counsellorEmail.save()
+                .then(() => res.json('Couns updated'))
+                .catch((err) => res.status(400).json('Error1: ' + err));
+        })
+        .catch((err) => res.status(400).json('Error2: ' + err));
+});
+
 // Create
 router.post('/create', (req, res) => {
     const name = req.body.name;
     const counsEmail = req.body.counsEmail;
+    const receiveEmail = req.body.receiveEmail;
 
     const newCounsEmail = new counsellorEmail({
         name,
         counsEmail,
+        receiveEmail,
     });
 
     newCounsEmail.save()
@@ -25,11 +43,10 @@ router.post('/create', (req, res) => {
         .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-// Delete
-router.delete('/delete/:id', (req, res) => {
-    counsellorEmail.findByIdAndDelete(req.params.id)
-        .then(() => res.json('Exercise deleted'))
-        .catch((err) => res.status(400).json('Error: ' + err));
+router.delete('/remove', (req, res) => {
+    counsellorEmail.findByIdAndDelete(req.body.id)
+        .then(() => {res.json('Couns deleted');})
+        .catch((err) => {res.status(400).json('Error: ' + err)});
 });
 
 export default router;
