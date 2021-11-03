@@ -14,7 +14,7 @@ router.post('/login', async (req,res) =>{
     const exists = await counsellorEmail.exists({counsEmail:email});
 
     if (password === process.env.ADMIN_PASSWORD && exists){
-        const token = jwt.sign({email:email},process.env.JWT_SECRET);
+        const token = jwt.sign({email:email},process.env.JWT_SECRET,{expiresIn: 86400 });
         res.status(200).json({adminToken:token});
     } else{
         res.status(200).json('FALSE');

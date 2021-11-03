@@ -8,10 +8,10 @@ export default function validateCouns(counsInfo) {
 	}
 
     if (counsInfo.counsEmail === '' || counsInfo.counsEmail === 'Email') {
-		errors.uniRepEmail = 'Email required';
+		errors.counsEmail = 'Email required';
 	
     } else if (!regex.test(counsInfo.counsEmail)) {
-		errors.uniRepEmail = 'Invalid email';
+		errors.counsEmail = 'Invalid email';
 	}
 
     return errors

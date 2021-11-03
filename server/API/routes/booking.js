@@ -2,6 +2,7 @@ import express from 'express';
 import bookingDateInfo from '../models/bookingDateInfo.model.js';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import axios from 'axios'
 
 dotenv.config();
 
@@ -19,6 +20,10 @@ let transporter = nodemailer.createTransport({
         rejectUnauthorized: false,
     },
 });
+
+// async function getLogo(){
+    
+// }
 
 const router = express.Router();
 

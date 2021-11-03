@@ -24,7 +24,7 @@ app.use('*', (req, res) => res.status(404).json({ error: 'Page not found' }));
 
 // Connect to database
 const url = process.env.ATLAS_URI;
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, 'useCreateIndex': true});
 const connection = mongoose.connection;
 connection.once('open', () => {console.log('Connected to MongoDB');});
 

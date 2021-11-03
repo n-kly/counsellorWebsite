@@ -53,13 +53,18 @@ const CCardAdd = ({setEmails}) => {
                 if(verify){
                     setValidated(false);
 
+                    console.log(counsInfo)
+
                     axios.post('http://localhost:5000/couns/create', counsInfo)
                     .then(()=>{
                         getEmail()
                         .then((res)=>{
                             setEmails(res.data)
                         })
-                    }).then(setShow(false))
+                    }).catch((err)=>{
+                        console.log(err)
+                        alert(err)
+                    })
                     setShow(false);  
                 } else{
                     alert('Invalid authentication token')
@@ -74,7 +79,7 @@ const CCardAdd = ({setEmails}) => {
         <>
           <Modal show={show} onHide={cancel} backdrop="static">
                 <Modal.Header closeButton>
-                    <Modal.Title>{tempCounsInfo.name}</Modal.Title>
+                    <Modal.Title>Name</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -82,7 +87,6 @@ const CCardAdd = ({setEmails}) => {
                             <Form.Label> Counsellor Name </Form.Label>
                             <Form.Control
                                 type='text' 
-                                defaultValue={tempCounsInfo.name}
                                 onChange={(e) => {
 							        setCounsInfo({...counsInfo,name: e.target.value,})
                                 }}
@@ -94,7 +98,6 @@ const CCardAdd = ({setEmails}) => {
                             <Form.Label> Email </Form.Label>
                             <Form.Control
                                 type='text' 
-                                defaultValue={tempCounsInfo.counsEmail}
                                 onChange={(e) => {
 							        setCounsInfo({...counsInfo,counsEmail: e.target.value,})
                                 }}
@@ -106,10 +109,8 @@ const CCardAdd = ({setEmails}) => {
                             <Form.Label> Receive Emails? </Form.Label>
                             <Form.Control
                                 type='checkbox'
-                                defaultChecked={tempCounsInfo.receiveEmail} 
-                                onChange={(e)=> {
-                                    setCounsInfo({...counsInfo,receiveEmail: e.target.value,})
-                                }}
+                                defaultChecked={true} 
+                                onClick={()=>{setCounsInfo({...counsInfo,receiveEmail:!counsInfo.receiveEmail})}}
                                 isInvalid={validated?!!error.receiveEmail:false}
                                 isValid={validated?!error.receiveEmail:false}
                             />
@@ -118,7 +119,7 @@ const CCardAdd = ({setEmails}) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="success" onClick={()=>{create()}}>
-                        Delete Booking
+                        Add Counsellor
                     </Button>
                 </Modal.Footer>
             </Modal>
