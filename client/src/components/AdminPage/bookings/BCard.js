@@ -1,6 +1,6 @@
 import {useState} from "react";
 import Card from 'react-bootstrap/Card'
-import image from './maxresdefault.jpg' 
+import image from './undraw_Page_not_found_re_e9o6.png' 
 import dayjs from "dayjs";
 import '../admin.css'
 import Button from 'react-bootstrap/Button';
@@ -23,6 +23,7 @@ const BCard = ({instance,setBooking}) => {
 		uniRepJobTitle: instance.booking.uniRepJobTitle,
 		uniRepName: instance.booking.uniRepName,
 		uniRepEmail: instance.booking.uniRepEmail,
+        logoUrl:instance.booking.logoUrl,
 	});
     const [tempBooking, setTempBooking] = useState({
 		uniName: instance.booking.uniName,
@@ -30,6 +31,7 @@ const BCard = ({instance,setBooking}) => {
 		uniRepJobTitle: instance.booking.uniRepJobTitle,
 		uniRepName: instance.booking.uniRepName,
 		uniRepEmail: instance.booking.uniRepEmail,
+        logoUrl:instance.booking.logoUrl,
 	});
 
     function cancel(){
@@ -73,6 +75,7 @@ const BCard = ({instance,setBooking}) => {
                             uniRepJobTitle: bookingData.uniRepJobTitle,
                             uniRepEmail: bookingData.uniRepEmail,
                             uniRegion: bookingData.uniRegion,
+                            logoUrl: bookingData.logoUrl,
                         },
                     };
 
@@ -199,6 +202,17 @@ const BCard = ({instance,setBooking}) => {
                                 isValid={validated?!error.uniRepEmail:false}
                             />
                         </Form.Group>
+                        <Form.Group>
+                            <Form.Label> Image URL </Form.Label>
+                            <Form.Control 
+                                type='text' 
+                                defaultValue={tempBooking.logoUrl}
+                                onChange={(e) => {
+                                    setBookingData({...bookingData,logoUrl: e.target.value,})
+                                }}
+                                isValid={validated?true:false}
+                            />
+                        </Form.Group>
                     </Form>                                    
                 </Modal.Body>
                 <Modal.Footer>
@@ -217,7 +231,7 @@ const BCard = ({instance,setBooking}) => {
                         <Card.Title className='cardUni'>{bookingData.uniName}</Card.Title>
                         <Card.Subtitle className='cardRegion'>{bookingData.uniRegion}</Card.Subtitle>
                     </Card.Body>
-                    <Card.Img variant="top" src={image} className='cardImage'/>
+                    <Card.Img variant="top" src={!!bookingData.logoUrl?bookingData.logoUrl:image} className='cardImage'/>
                     <Card.Body>
                         <Card.Text className='cardDate'>{dayjs(date).format('dddd, MMMM D')}</Card.Text>
                         <Card.Text className='cardTitle'>{bookingData.uniRepJobTitle + ': ' + bookingData.uniRepName}</Card.Text>

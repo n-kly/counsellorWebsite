@@ -1,6 +1,6 @@
 import {useState} from "react";
 import Card from 'react-bootstrap/Card'
-import image from './maxresdefault.jpg' 
+import image from './undraw_No_data_re_kwbl.png'  
 import dayjs from "dayjs";
 import '../admin.css'
 import Button from 'react-bootstrap/Button';
@@ -23,6 +23,7 @@ const BCardAdd = ({setBooking}) => {
 		uniRepJobTitle: "Rep Title",
 		uniRepName: "Rep Name",
 		uniRepEmail: "Rep Email",
+        logoUrl: "",
 	});
     const [tempBooking, setTempBooking] = useState({ // Store for cancel
 		uniName: "University Name",
@@ -30,6 +31,7 @@ const BCardAdd = ({setBooking}) => {
 		uniRepJobTitle: "Rep Title",
 		uniRepName: "Rep Name",
 		uniRepEmail: "Rep Email",
+        logoUrl: "",
 	});
 
     function cancel(){
@@ -72,6 +74,7 @@ const BCardAdd = ({setBooking}) => {
                             uniRepJobTitle: bookingData.uniRepJobTitle,
                             uniRepEmail: bookingData.uniRepEmail,
                             uniRegion: bookingData.uniRegion,
+                            logoUrl: bookingData.logoUrl,
                         },
                     };
                     
@@ -165,6 +168,16 @@ const BCardAdd = ({setBooking}) => {
                                 }}
                                 isInvalid={validated?!!error.uniRepEmail:false}
                                 isValid={validated?!error.uniRepEmail:false}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label> Image URL </Form.Label>
+                            <Form.Control 
+                                type='text' 
+                                onChange={(e) => {
+                                    setBookingData({...bookingData,logoUrl: e.target.value,})
+                                }}
+                                isValid={validated?true:false}
                             />
                         </Form.Group>
                     </Form>                                    

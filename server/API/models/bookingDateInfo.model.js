@@ -10,6 +10,7 @@ const schema = mongoose.Schema({
         uniRepJobTitle: String,
         uniRepEmail: String,
         uniRegion: String,
+        logoUrl: String,
     },
 });
 

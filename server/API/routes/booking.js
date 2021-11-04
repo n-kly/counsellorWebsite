@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { query } from 'express';
 import bookingDateInfo from '../models/bookingDateInfo.model.js';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
@@ -21,9 +21,13 @@ let transporter = nodemailer.createTransport({
     },
 });
 
-// async function getLogo(){
-    
-// }
+async function getLogo(uniName){
+    let query = (uniName.replace(/ /g,"+")) + "+Logo"
+    let queryString = `https://serpapi.com/search.json?engine=google&q=${query}&location=United+States&google_domain=google.com&gl=us&hl=en&safe=active&tbm=isch&api_key=${process.env.IMAGE_API_KEY}`
+    let res = await axios.get(queryString)
+    let imageURL = await res.data.images_results[0].thumbnail 
+    return await imageURL
+}
 
 const router = express.Router();
 
@@ -47,42 +51,45 @@ router.put('/create', (req, res) => {
     const uniRepEmail = req.body.booking.uniRepEmail;
     const uniRegion = req.body.booking.uniRegion;
 
-    const newBooking = {
-        aptDate: aptDate,
-        status: status,
-        booking: {
-            uniName,
-            uniRepName,
-            uniRepJobTitle,
-            uniRepEmail,
-            uniRegion,
-        },
-    };
+    getLogo(uniName).then( logoUrl => {
+        const newBooking = {
+            aptDate: aptDate,
+            status: status,
+            booking: {
+                uniName,
+                uniRepName,
+                uniRepJobTitle,
+                uniRepEmail,
+                uniRegion,
+                logoUrl,
+            },
+        };
 
-    bookingDateInfo.findOneAndUpdate(
-        { aptDate: aptDate }, 
-        newBooking)
-        .then(() => {
-            res.json('Booking created');
-            // Create mail 
-            let mailOptions = {
-                from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
-                to: uniRepEmail,
-                subject: 'Your presentation information',
-                text: `Thank you for signing up ${uniRepName}!
-                Your presentation is at ${aptDate}`,
-            };
+        bookingDateInfo.findOneAndUpdate(
+            { aptDate: aptDate }, 
+            newBooking)
+            .then(() => {
+                res.json('Booking created');
+                // Create mail 
+                let mailOptions = {
+                    from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
+                    to: uniRepEmail,
+                    subject: 'Your presentation information',
+                    text: `Thank you for signing up ${uniRepName}!
+                    Your presentation is at ${aptDate}`,
+                };
 
-            // Send mail
-            transporter.sendMail(mailOptions, (err, info) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Message sent');
-                }
-            });
-        })
-        .catch((err) => res.status(400).json('Error: ' + err));
+                // Send mail
+                transporter.sendMail(mailOptions, (err, info) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('Message sent');
+                    }
+                });
+            })
+            .catch((err) => res.status(400).json('Error: ' + err));
+    })
 });
 
 
@@ -105,6 +112,7 @@ router.patch('/editbooking', (req, res) => {
             bookingDateInfo.booking.uniRepJobTitle = req.body.booking.uniRepJobTitle;
             bookingDateInfo.booking.uniRepEmail = req.body.booking.uniRepEmail;
             bookingDateInfo.booking.uniRegion = req.body.booking.uniRegion;
+            bookingDateInfo.booking.logoUrl = req.body.booking.logoUrl;
             bookingDateInfo.aptDate = req.body.aptDate;
 
             bookingDateInfo.save()
@@ -150,21 +158,24 @@ router.post('/createm', (req, res) => {
     const uniRepEmail = req.body.booking.uniRepEmail;
     const uniRegion = req.body.booking.uniRegion;
 
-    const newBooking = new bookingDateInfo({
-        aptDate: aptDate,
-        status: status,
-        booking: {
-            uniName,
-            uniRepName,
-            uniRepJobTitle,
-            uniRepEmail,
-            uniRegion,
-        },
-    });
+    getLogo(uniName).then( logoUrl => {
+        const newBooking = new bookingDateInfo({
+            aptDate: aptDate,
+            status: status,
+            booking: {
+                uniName,
+                uniRepName,
+                uniRepJobTitle,
+                uniRepEmail,
+                uniRegion,
+                logoUrl,
+            },
+        });
 
-    newBooking.save()
+        newBooking.save()
         .then(() => res.json('Booking created'))
         .catch((err) => res.status(400).json('Error: ' + err));
+    })   
 });
 
 export default router;
