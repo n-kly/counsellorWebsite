@@ -51,15 +51,23 @@ function FormPage() {
 			},};
 
 		setCheckDate(!checkDate); // Manually re-render before submission to trigger validation
-		if (Object.keys(validateInfo(bookingDateInfoInstance)).length === 0) { 
+		if (Object.keys(validateInfo(bookingDateInfoInstance)).length === 0) {
+			localStorage.setItem('lastDate', new Date()) 
 			setSuccess(true); // Lock input fields 
-			axios.put('http://localhost:5000/booking/create', bookingDateInfoInstance);
+			axios.post('http://localhost:5000/booking/create', bookingDateInfoInstance);
 
 		} else {
 			setError(validateInfo(bookingDateInfoInstance));
 			setValidated(true); // Trigger validation styles
-		}};
+		}
+	};
 	
+	useEffect(()=>{
+		let lastDate = localStorage.getItem('lastDate')
+		if(dayjs(lastDate).isAfter(dayjs(new Date()).subtract(3, 'month'))){
+			setSuccess(true);
+		} 
+	}, [])
 
 	// eslint-disable-next-line
 	useEffect(async () => {

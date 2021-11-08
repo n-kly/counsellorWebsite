@@ -58,39 +58,40 @@ const BCardAdd = ({setBooking}) => {
             setValidated(true);
         } else{
             const token = localStorage.getItem('adminToken')
+            let verify;
+
+            if(!!token) {
+                verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token});
+            } else {
+                verify =  false;
+            }
+                
+            if(verify){
+                setValidated(false);
             
-            if(!!token){
-                const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
+                let bookingDateInfoInstance = {
+                    aptDate: date,
+                    status: 'Booked',
+                    booking: {
+                        uniName: bookingData.uniName,
+                        uniRepName: bookingData.uniRepName,
+                        uniRepJobTitle: bookingData.uniRepJobTitle,
+                        uniRepEmail: bookingData.uniRepEmail,
+                        uniRegion: bookingData.uniRegion,
+                        logoUrl: bookingData.logoUrl,
+                    },
+                };
                 
-                if(verify){
-                    setValidated(false);
-                
-                    let bookingDateInfoInstance = {
-                        aptDate: date,
-                        status: 'Booked',
-                        booking: {
-                            uniName: bookingData.uniName,
-                            uniRepName: bookingData.uniRepName,
-                            uniRepJobTitle: bookingData.uniRepJobTitle,
-                            uniRepEmail: bookingData.uniRepEmail,
-                            uniRegion: bookingData.uniRegion,
-                            logoUrl: bookingData.logoUrl,
-                        },
-                    };
-                    
-                    axios.post('http://localhost:5000/booking/createm', bookingDateInfoInstance)
-                    .then(()=>{
-                        // eslint-disable-next-line
-                        getDisplayData()
-                        .then((res)=>{
-                            setBooking(res.data);
-                        })
-                    }).then(setShow(false));  
-                } else{
-                    alert('Invalid authentication token')
-                }
+                axios.post('http://localhost:5000/booking/create', bookingDateInfoInstance)
+                .then(()=>{
+                    // eslint-disable-next-line
+                    getDisplayData()
+                    .then((res)=>{
+                        setBooking(res.data);
+                    })
+                }).then(setShow(false));  
             } else{
-                alert('Please authenticate by logging in')
+                alert('Invalid authentication token')
             }
         }      
     }

@@ -46,47 +46,53 @@ const CCard = ({instance,setEmails}) => {
             setValidated(true);
         } else{
             const token = localStorage.getItem('adminToken')
-            
-            if(!!token){
-                const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
-                
-                if(verify){
-                    setValidated(false);
-            
-                    counsInfo.id = instance._id
+            let verify;
 
-                    axios.patch('http://localhost:5000/couns/edit', counsInfo);
-                    setShow(false);  
-                } else{
-                    alert('Invalid authentication token')
-                }
+            if(!!token) {
+                verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token});
+            } else {
+                verify =  false;
+            }
+            
+            if(verify){
+                setValidated(false);
+        
+                counsInfo.id = instance._id
+                counsInfo.adminToken = token
+
+                axios.patch('http://localhost:5000/couns/edit', counsInfo);
+                setShow(false);  
+            
             } else{
-                alert('Please authenticate by logging in')
-            }   
+                alert('Invalid authentication token')
+            }
+              
         }      
     }
     
     async function remove(){
         const token = localStorage.getItem('adminToken')
-            
-        if(!!token){
-            const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
-            
-            if(verify){
-                axios.delete('http://localhost:5000/couns/remove', {data: {id:instance._id}})
-                .then(()=>{
-                    // eslint-disable-next-line
-                    getEmail()
-                    .then((res)=>{
-                        setEmails(res.data);
-                    })
-                }).then(setShow(false));  
-            } else{
-                alert('Invalid authentication token')
-            }
-        } else{
-            alert('Please authenticate by logging in')
+        let verify;
+
+        if(!!token) {
+            verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token});
+        } else {
+            verify =  false;
         }
+        
+        if(verify){
+            axios.delete('http://localhost:5000/couns/remove', {data: {id:instance._id, adminToken:token}})
+            .then(()=>{
+                // eslint-disable-next-line
+                getEmail()
+                .then((res)=>{
+                    setEmails(res.data);
+                })
+            }).then(setShow(false));  
+        } else{
+            alert('Invalid authentication token')
+        }
+        
     }
 
     return (

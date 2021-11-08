@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import axios from 'axios'
 
 const EditCalendar = () => {
-    const [value, setValue] = useState(new Date()); 
     const [dates, setDates] = useState({available:[],booked:[]})
     const [tempDates, setTempDates] = useState({})
     const [changeLog, setChangeLog] = useState({}) 
@@ -43,9 +42,27 @@ const EditCalendar = () => {
         setDates(res);
     }, [])
 
-    function handleSubmit(){
-        axios.post('http://localhost:5000/booking/editcalendar', changeLog)
-        setChangeLog({})
+    async function handleSubmit(){
+        const token = localStorage.getItem('adminToken')
+        let verify;
+
+        if(!!token) {
+            verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token});
+        } else {
+            verify =  false;
+        }
+
+        if(verify){
+            let submitData = {
+                changeLog: changeLog,
+                adminToken: token,
+            }
+
+            axios.post('http://localhost:5000/booking/editcalendar', submitData)
+            setChangeLog({})
+        } else {
+            alert('Invalid authentication token')
+        }
     }
 
     return (

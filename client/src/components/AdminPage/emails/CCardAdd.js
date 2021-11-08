@@ -46,32 +46,33 @@ const CCardAdd = ({setEmails}) => {
             setValidated(true);
         } else{
             const token = localStorage.getItem('adminToken')
-            
-            if(!!token){
-                const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
-                
-                if(verify){
-                    setValidated(false);
+            let verify;
 
-                    console.log(counsInfo)
+            if(!!token) {
+                verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token});
+            } else {
+                verify =  false;
+            }
+ 
+            if(verify){
+                setValidated(false);
 
-                    axios.post('http://localhost:5000/couns/create', counsInfo)
-                    .then(()=>{
-                        getEmail()
-                        .then((res)=>{
-                            setEmails(res.data)
-                        })
-                    }).catch((err)=>{
-                        console.log(err)
-                        alert(err)
+                counsInfo.adminToken = token
+
+                axios.post('http://localhost:5000/couns/create', counsInfo)
+                .then(()=>{
+                    getEmail()
+                    .then((res)=>{
+                        setEmails(res.data)
                     })
-                    setShow(false);  
-                } else{
-                    alert('Invalid authentication token')
-                }
+                }).catch((err)=>{
+                    console.log(err)
+                    alert(err)
+                })
+                setShow(false);  
             } else{
-                alert('Please authenticate by logging in')
-            }   
+                alert('Invalid authentication token')
+            }
         }      
     }
 

@@ -17,6 +17,8 @@ const BCard = ({instance,setBooking}) => {
 	const [date, setDate] = useState(instance.aptDate);
     const [tempDate, setTempDate] = useState(instance.aptDate);
 
+    const [sendEmail, setSendEmail] = useState(false)
+
     const [bookingData, setBookingData] = useState({
 		uniName: instance.booking.uniName,
         uniRegion: instance.booking.uniRegion,
@@ -58,58 +60,62 @@ const BCard = ({instance,setBooking}) => {
             setValidated(true);
         } else{
             const token = localStorage.getItem('adminToken')
-            
-            if(!!token){
-                const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
-                
-                if(verify){
-                    setValidated(false);
-            
-                    let bookingDateInfoInstance = {
-                        id:instance._id,
-                        aptDate: date,
-                        status: 'Booked',
-                        booking: {
-                            uniName: bookingData.uniName,
-                            uniRepName: bookingData.uniRepName,
-                            uniRepJobTitle: bookingData.uniRepJobTitle,
-                            uniRepEmail: bookingData.uniRepEmail,
-                            uniRegion: bookingData.uniRegion,
-                            logoUrl: bookingData.logoUrl,
-                        },
-                    };
+            let verify;
 
-                    axios.patch('http://localhost:5000/booking/editbooking', bookingDateInfoInstance);
-                    setShow(false);  
-                } else{
-                    alert('Invalid authentication token')
-                }
-            } else{
-                alert('Please authenticate by logging in')
-            }   
-        }      
-    }
-
-    async function remove(){
-        const token = localStorage.getItem('adminToken')
-            
-        if(!!token){
-            const verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token})
+            if(!!token) {
+                verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token});
+            } else {
+                verify = false;
+            }
             
             if(verify){
-                axios.delete('http://localhost:5000/booking/remove', {data: {id:instance._id}})
-                .then(()=>{
-                    // eslint-disable-next-line
-                    getDisplayData()
-                    .then((res)=>{
-                        setBooking(res.data);
-                    })
-                }).then(setShow(false));  
+                setValidated(false);
+                let bookingDateInfoInstance = {
+                    id:instance._id,
+                    aptDate: date,
+                    status: 'Booked',
+                    booking: {
+                        uniName: bookingData.uniName,
+                        uniRepName: bookingData.uniRepName,
+                        uniRepJobTitle: bookingData.uniRepJobTitle,
+                        uniRepEmail: bookingData.uniRepEmail,
+                        uniRegion: bookingData.uniRegion,
+                        logoUrl: bookingData.logoUrl,
+                    },
+                    allowMail: sendEmail,
+                    adminToken: token,
+                };
+
+                axios.patch('http://localhost:5000/booking/editbooking', bookingDateInfoInstance);
+                setShow(false);  
             } else{
                 alert('Invalid authentication token')
             }
+        } 
+    }      
+
+
+    async function remove(){
+        const token = localStorage.getItem('adminToken')
+        let verify;
+
+        if(!!token) {
+            verify = await axios.post('http://localhost:5000/login/verify', {adminToken:token});
+        } else {
+            verify = false;
+        }
+              
+        if(verify){
+            axios.delete('http://localhost:5000/booking/remove', {data: {id:instance._id,adminToken:token}})
+            .then(()=>{
+                // eslint-disable-next-line
+                getDisplayData()
+                .then((res)=>{
+                    setBooking(res.data);
+                })
+            }).then(setShow(false));  
         } else{
-            alert('Please authenticate by logging in')
+            alert('Invalid authentication token')
         }
     }
 
@@ -209,6 +215,17 @@ const BCard = ({instance,setBooking}) => {
                                 defaultValue={tempBooking.logoUrl}
                                 onChange={(e) => {
                                     setBookingData({...bookingData,logoUrl: e.target.value,})
+                                }}
+                                isValid={validated?true:false}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label> Send Email? </Form.Label>
+                            <Form.Control 
+                                type='checkbox' 
+                                defaultChecked={true}
+                                onChange={(e) => {
+                                    setSendEmail(e.target.value)
                                 }}
                                 isValid={validated?true:false}
                             />
