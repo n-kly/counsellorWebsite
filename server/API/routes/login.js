@@ -32,8 +32,7 @@ router.post('/verify', (req,res) =>{
         }
     } else {
         res.status(200).json(false)
-    }
-    
-})
+    } 
+});
 
 export default router;

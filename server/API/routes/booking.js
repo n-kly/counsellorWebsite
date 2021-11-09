@@ -25,7 +25,15 @@ let transporter = nodemailer.createTransport({
 
 async function getLogo(uniName){
     let query = (uniName.replace(/ /g,"+")) + "+Logo"
-    let queryString = `https://serpapi.com/search.json?engine=google&q=${query}&location=United+States&google_domain=google.com&gl=us&hl=en&safe=active&tbm=isch&api_key=${process.env.IMAGE_API_KEY}`
+    let queryString = 
+    `https://serpapi.com/search.json?engine=google
+    &q=${query}
+    &google_domain=google.com
+    &gl=us
+    &hl=en
+    &safe=active
+    &tbm=isch
+    &api_key=${process.env.IMAGE_API_KEY}`
     let res = await axios.get(queryString)
     let imageURL = await res.data.images_results[0].thumbnail 
     return await imageURL
@@ -38,9 +46,9 @@ router.get('/readforform', (req, res) => {
     bookingDateInfo.find(
         { aptDate: { $gte: new Date() } },
         { aptDate: 1, status: 1, 'booking.uniRegion': 1 })
-        .sort('aptDate')
-        .then((bookingDateInfo) => res.json(bookingDateInfo))
-        .catch((err) => res.status(400).json('Error: ' + err));
+    .sort('aptDate')
+    .then((bookingDateInfo) => res.json(bookingDateInfo))
+    .catch((err) => res.status(400).json('Error: ' + err));
 });
 
 // Create a booking
@@ -126,8 +134,8 @@ router.get('/readfordisplay', (req, res) => {
         { aptDate: { $gte: new Date() }, status:"Booked"},
         { aptDate: 1, 'booking': 1 })
         .sort('aptDate')
-        .then((bookingDateInfo) => res.json(bookingDateInfo))
-        .catch((err) => res.status(400).json('Error: ' + err));
+    .then((bookingDateInfo) => res.json(bookingDateInfo))
+    .catch((err) => res.status(400).json('Error: ' + err));
 });
 
 // Edit a booking
