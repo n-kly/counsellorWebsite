@@ -6,7 +6,6 @@ const PrivateRoute = ({component, path, admin}) => {
     } else {
         return(<Redirect to='/' />)
     }
-    
 }
 
 export default PrivateRoute

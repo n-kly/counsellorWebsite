@@ -84,7 +84,6 @@ function FormPage() {
 			booked = [];
 			regionBooked = [];
 
-			// Crit 1b
 			calendarData.forEach((instance, index) => { 
 				if (instance.booking.uniRegion === formData.uniRegion) {
 					booked.push(dayjs(instance.aptDate).format('DD/MM/YYYY'));
@@ -119,7 +118,6 @@ function FormPage() {
 				}
 			});
 			
-			// Crit 1c
 			calendarData.forEach((instance) => { 
 				if (instance.status === 'Available') {
 					available.push(dayjs(instance.aptDate).format('DD/MM/YYYY'));

@@ -69,7 +69,6 @@ const EditCalendar = () => {
         <div className='ccontainer'>
             <Calendar
                 onChange={(e)=>{
-
                     let changeDate = dayjs(e).format('DD/MM/YYYY')
 
                     if(dates.available.includes(changeDate)){ // Remove

@@ -9,7 +9,8 @@ const Login = ({show,cancel,setShow,error,setError,setAdmin}) => {
     
 
     async function handleSubmit(){
-        await axios.post('http://localhost:5000/login/login', loginfo).then((res)=>{
+        await axios.post('http://localhost:5000/login/login', loginfo)
+        .then((res)=>{
             if(res.data === "FALSE"){
                 setError(true)
 
@@ -18,10 +19,10 @@ const Login = ({show,cancel,setShow,error,setError,setAdmin}) => {
                 localStorage.setItem('adminToken', res.data.adminToken)
                 setShow(false)
             }
-        }).catch(err =>{
+        })
+        .catch(err =>{
             console.log(err)
-        });
-        
+        });   
     }
     
     return (
