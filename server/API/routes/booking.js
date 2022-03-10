@@ -24,18 +24,11 @@ let transporter = nodemailer.createTransport({
 });
 
 async function getLogo(uniName){
-    let query = (uniName.replace(/ /g,"+")) + "+Logo"
+    let query = (uniName.replace(/ /g,"+")) + "+Logo" // Create query string
     let queryString = 
-    `https://serpapi.com/search.json?engine=google
-    &q=${query}
-    &google_domain=google.com
-    &gl=us
-    &hl=en
-    &safe=active
-    &tbm=isch
-    &api_key=${process.env.IMAGE_API_KEY}`
-    let res = await axios.get(queryString)
-    let imageURL = await res.data.images_results[0].thumbnail 
+    `https://serpapi.com/search.json?engine=google&q=${query}&google_domain=google.com&gl=us&hl=en&safe=active&tbm=isch&api_key=${process.env.IMAGE_API_KEY}`
+    let res = await axios.get(queryString) // Get result 
+    let imageURL = await res.data.images_results[0].thumbnail // Filter for first result
     return await imageURL
 }
 
@@ -75,9 +68,9 @@ router.post('/create', (req, res) => {
                 logoUrl,
             },
         };
-
+        
         bookingDateInfo.findOneAndUpdate(
-        { aptDate: aptDate }, 
+            { aptDate: aptDate }, 
         newBooking)
         .then(() => {
             res.json('Booking created'); 
@@ -97,29 +90,27 @@ router.post('/create', (req, res) => {
                 }
             });
 
-            counsellorEmail.find()
+            counsellorEmail.find({ receiveEmail: true })
             .then((counsList)=>{
                 counsList.forEach((couns)=>{
-                    if(couns.receiveEmail === true){
-                        let counsMailOptions = {
-                            from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
-                            to: couns.counsEmail,
-                            subject: 'Booking Created',
-                            text: `${uniRepName} has just registered for the: ${uniName}!
-                            The date they registered for is: ${aptDate}
-                            Representative's job title: ${uniRepJobTitle}
-                            Representative's email: ${uniRepEmail}
-                            University's region: ${uniRegion}`,
-                        }
-
-                        transporter.sendMail(counsMailOptions, (err, info) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log('Message sent');
-                            }
-                        });
+                    let counsMailOptions = {
+                        from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
+                        to: couns.counsEmail,
+                        subject: 'Booking Created',
+                        text: `${uniRepName} has just registered for the: ${uniName}!
+                        The date they registered for is: ${aptDate}
+                        Representative's job title: ${uniRepJobTitle}
+                        Representative's email: ${uniRepEmail}
+                        University's region: ${uniRegion}`,
                     }
+
+                    transporter.sendMail(counsMailOptions, (err, info) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('Message sent');
+                        }
+                    }); 
                 })
             })
         })
@@ -179,32 +170,30 @@ router.patch('/editbooking', (req, res) => {
                         }
                     });
         
-                    counsellorEmail.find()
+                    counsellorEmail.find({ receiveEmail: true })
                     .then((counsList)=>{
                         counsList.forEach((couns)=>{
-                            if(couns.receiveEmail === true){
-                                let counsMailOptions = {
-                                    from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
-                                    to: couns.counsEmail,
-                                    subject: 'Updated booking information',
-                                    text: `Updates have been made to a registered booking, new information:
-                                    University Name: ${req.body.booking.uniName}
-                                    Name ${req.body.booking.uniRepName}
-                                    Job title: ${req.body.booking.uniRepJobTitle}
-                                    Representative's email: ${req.body.booking.uniRepEmail}
-                                    University's region: ${req.body.booking.uniRegion}
-                                    Presentation date: ${req.body.aptDate}
-                                    Logo URL: ${req.body.booking.logoUrl}`,
-                                }
-        
-                                transporter.sendMail(counsMailOptions, (err, info) => {
-                                    if (err) {
-                                        console.log(err);
-                                    } else {
-                                        console.log('Message sent');
-                                    }
-                                });
+                            let counsMailOptions = {
+                                from: 'BISH Signup <bishvirtualsignup@gmail.com> ',
+                                to: couns.counsEmail,
+                                subject: 'Updated booking information',
+                                text: `Updates have been made to a registered booking, new information:
+                                University Name: ${req.body.booking.uniName}
+                                Name ${req.body.booking.uniRepName}
+                                Job title: ${req.body.booking.uniRepJobTitle}
+                                Representative's email: ${req.body.booking.uniRepEmail}
+                                University's region: ${req.body.booking.uniRegion}
+                                Presentation date: ${req.body.aptDate}
+                                Logo URL: ${req.body.booking.logoUrl}`,
                             }
+    
+                            transporter.sendMail(counsMailOptions, (err, info) => {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log('Message sent');
+                                }
+                            });
                         })
                     })
                 }

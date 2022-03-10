@@ -1,0 +1,94 @@
+.cardUni{
+    font-size: 1.5rem;
+    font-weight: 300; 
+}
+
+.cardRegion{
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.cardImage{
+    width: calc(100% + 2px);
+    border-radius: 0;
+    margin-left: -1px;
+    border-left: 1px solid #DFDFDF;
+    border-right: 1px solid #DFDFDF;
+}
+
+.cardDate{
+
+}
+
+.cardTitle{
+
+}
+
+.cardEmail{
+
+}
+
+.pad{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cardButton{
+    width: 100%;
+}
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ccontainer {
+    margin-left: calc(50vw - 20rem);
+    margin-top: calc(50vh - 15rem);
+}
+
+.cbooked {
+    color: hsla(3, 100%, 20%, 1) !important;
+	background-color: rgba(255, 65, 54, 0.6) !important;
+}
+
+.cbooked:hover {
+	color: hsla(3, 100%, 20%, 1) !important;
+	background-color: rgba(255, 65, 54, 0.55) !important;
+}
+
+.cavailable {
+	color: hsla(127, 63%, 15%, 1) !important;
+	background-color: rgba(1, 255, 112, 0.7) !important;
+}
+
+.cavailable:hover {
+	color: hsla(127, 63%, 15%, 1) !important;
+	background-color: rgba(1, 255, 112, 0.5) !important;
+}
+
+.topbar{
+    height: 10vh;
+    background: #f8f9fa;
+    position:absolute;
+    width:100%;
+    text-align: center;
+    padding-top: 2vh;
+}
+
+.botbar{
+    bottom: 0;
+    height: 10vh;
+    background: #f8f9fa;
+    position:absolute;
+    width:100%;
+}
+
+.va{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15vh;
+}

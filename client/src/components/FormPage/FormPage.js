@@ -84,8 +84,11 @@ function FormPage() {
 			booked = [];
 			regionBooked = [];
 
+			// console.log(instance.booking.uniRegion)
+			console.log(calendarData)
+
 			calendarData.forEach((instance, index) => { 
-				if (instance.booking.uniRegion === formData.uniRegion) {
+				if (instance.status === "Booked" && instance.booking.uniRegion === formData.uniRegion) {
 					booked.push(dayjs(instance.aptDate).format('DD/MM/YYYY'));
 
 					// Lower bound of the week
@@ -140,7 +143,7 @@ function FormPage() {
 	return (
 		<div className='container'>
 			<div className='row align-items-center'>
-				<div className='col '>
+				<div className='col-6'>
 					<TextForm
 						validated={validated}
 						errors={error}
@@ -149,7 +152,7 @@ function FormPage() {
 						setFormData={setFormData}
 					/>
 				</div>
-				<div className='col '>
+				<div className='col-6'>
 					<DateCalendar
 						validated={validated}
 						errors={error}
@@ -162,12 +165,13 @@ function FormPage() {
 					/>
 				</div>
 			</div>
-			<div className='row align-items-center gy-5'>
-				<div className='col '>
+			<div className='row align-items-center'>
+				<div className='col-6'>
 					<TimeDisplay date={dateData} />
 				</div>
-				<div className='col'>
-					<div className='d-grid gap-2'>
+				
+				<div className='col-6'>
+					<div className='submitAlign'>
 						<Button
 							className={success ? 'disabled button' : 'button'}
 							as='input'
@@ -178,7 +182,7 @@ function FormPage() {
 					</div>
 				</div>
 			</div>
-			<h5
+			<h5 
 				id='successSubmit'
 				className={success ? 'alert-success' : 'hidden'}>
 				Thank you for signing up for the BISH virtual presentation, you

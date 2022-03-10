@@ -25,6 +25,15 @@
 	color: #212529;
 }
 
+.submitAlign {
+	text-align: center;
+	position: relative;
+	width: 38rem;
+	max-width: 100%;
+	padding: 1rem;
+	margin: auto;
+}
+
 .timeTitle {
 	/* text-decoration: underline; */
 	font-size: 1.5em;
