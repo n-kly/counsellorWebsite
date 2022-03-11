@@ -1,3 +1,5 @@
+# Docker file for deploying front end
+
 FROM node:14.17.4
 
 WORKDIR /app

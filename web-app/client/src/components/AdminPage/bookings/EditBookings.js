@@ -1,3 +1,5 @@
+// Iterate through bookings and display booking cards and the add booking card
+
 import {useEffect, useState} from "react";
 import axios from "axios";
 import '../admin.css'

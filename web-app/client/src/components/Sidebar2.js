@@ -1,3 +1,5 @@
+// Sidebar for client side routing
+
 import React, { useEffect, useState } from 'react';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaCalendarPlus, FaCalendarAlt,  } from 'react-icons/fa'

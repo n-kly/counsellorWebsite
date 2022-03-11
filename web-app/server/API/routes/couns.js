@@ -1,3 +1,5 @@
+// Counselor route, featuring all endpoints
+
 import express from 'express';
 import counsellorEmail from '../models/counsellorEmail.model.js';
 import jwt from 'jsonwebtoken'

@@ -1,3 +1,5 @@
+// Booking route, featuring all endpoints
+
 import express, { query } from 'express';
 import bookingDateInfo from '../models/bookingDateInfo.model.js';
 import counsellorEmail from '../models/counsellorEmail.model.js';

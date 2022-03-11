@@ -1,3 +1,4 @@
+# Compose the client and server containers into a single docker instance
 version: '3'
 
 services:

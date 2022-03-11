@@ -16,7 +16,7 @@ const Login = ({show,cancel,setShow,error,setError,setAdmin}) => {
 
             } else{
                 setAdmin(true)
-                localStorage.setItem('adminToken', res.data.adminToken)
+                localStorage.setItem('adminToken', res.data.adminToken) // Store admin token in local storage
                 setShow(false)
             }
         })

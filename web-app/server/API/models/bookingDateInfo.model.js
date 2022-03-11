@@ -1,3 +1,5 @@
+// schematic for a booking record
+
 import mongoose from 'mongoose';
 mongoose.pluralize(null); // Prevent database from pluralizing
 

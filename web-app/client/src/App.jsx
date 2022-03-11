@@ -1,3 +1,5 @@
+// Client side-routing for serving web pages by rendering components
+
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FormPage from './components/FormPage/FormPage';
@@ -18,8 +20,9 @@ function App() {
 				<Switch>
 					<Route path='/' exact component={FormPage} />
 					<Route path='/support' exact component={Support} />
-
-					<PrivateRoute admin={admin} path='/admin/booking' exact component={EditBookings} />
+					
+					{/*Private routes are blocked until admin access is granted*/}
+					<PrivateRoute admin={admin} path='/admin/booking' exact component={EditBookings} /> 
 					<PrivateRoute admin={admin} path='/admin/calendar' exact component={EditCalendar} />
 					<PrivateRoute admin={admin} path='/admin/emails' exact component={EditEmail} />
 				</Switch>

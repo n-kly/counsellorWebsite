@@ -1,3 +1,5 @@
+// Validation code 
+
 import dayjs from 'dayjs';
 
 export default function validateInfo(info) {

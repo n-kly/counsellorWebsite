@@ -1,3 +1,6 @@
+// Booking card template used to display upcoming bookings
+// Also features the modal used to edit bookings
+
 import {useState} from "react";
 import Card from 'react-bootstrap/Card'
 import image from './undraw_Page_not_found_re_e9o6.png' 

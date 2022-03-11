@@ -1,3 +1,5 @@
+// Main form page, a sort of hub for many components to mount to and render from
+
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';

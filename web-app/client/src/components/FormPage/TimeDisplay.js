@@ -1,3 +1,5 @@
+// Simple time display component
+
 import React from 'react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -14,7 +16,7 @@ const TimeDisplay = ({ date }) => {
 	let aptDate = dayjs(date).utc().hour(13).minute(30).second(0); // Sets date to predetermined appointment time
 	let visible = dayjs(date).format('DD/MM/YYYY') === dayjs(new Date()).format('DD/MM/YYYY'); // Checks if a date has been selected
 
-	return (
+	return ( // A lot of the code here is just formatting
 		<div className='timeBox'>
 			<h1 className='timeTitle'>Your appointment is at</h1>
 			<div className='localTime'>

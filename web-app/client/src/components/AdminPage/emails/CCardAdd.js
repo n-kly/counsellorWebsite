@@ -1,3 +1,5 @@
+// Same algorithm as used in AdminPage/bookings
+
 import {useState} from "react";
 import Card from 'react-bootstrap/Card'
 import '../admin.css'

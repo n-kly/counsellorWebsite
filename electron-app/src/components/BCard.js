@@ -1,3 +1,5 @@
+// Booking card template 
+
 import {useState} from "react";
 import dayjs from "dayjs";
 import Card from 'react-bootstrap/Card'

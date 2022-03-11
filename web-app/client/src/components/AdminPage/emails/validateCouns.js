@@ -1,3 +1,5 @@
+// Same algorithm as used in AdminPage/bookings
+
 export default function validateCouns(counsInfo) {
     let errors = {};
     const regex =

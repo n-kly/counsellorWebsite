@@ -1,3 +1,5 @@
+// Calendar to add or remove available days
+
 import Calendar from 'react-calendar';
 import Button from 'react-bootstrap/Button'
 import './Calendar.css'
@@ -23,7 +25,7 @@ const EditCalendar = () => {
         let available = [];
 	    let booked = [];
     
-        calendarData.forEach((instance) => { 
+        calendarData.forEach((instance) => { // Simple calendar formatting 
             if (instance.status === 'Available') {
                 available.push(dayjs(instance.aptDate).format('DD/MM/YYYY'));
             
@@ -73,12 +75,14 @@ const EditCalendar = () => {
 
                     if(dates.available.includes(changeDate)){ // Remove
                         
-                        let Arr = dates.available
-                        let newArray = Arr.filter(day=>day!==changeDate)
+                        let Arr = dates.available // Get the available array from dates
+                        let newArray = Arr.filter(day=>day!==changeDate) // Remove the selected date from newArray
 
-                        setDates({...dates,available:newArray})
-
-                        if(tempDates.includes(changeDate)){
+                        setDates({...dates,available:newArray}) // Set dates to the new filtered array
+                        
+                        // If the original array already had the selected date as unavailalbe then remove the changes from the changelog
+                        // This prevents accidentally trying to push duplicate changes
+                        if(tempDates.includes(changeDate)){  
                             setChangeLog({...changeLog, [e]:false})
                         } else {
                             let newChanges = changeLog
@@ -87,7 +91,7 @@ const EditCalendar = () => {
                         }
                             
                     } else { // Add
-                        setDates({...dates,available:[...dates.available,changeDate]})
+                        setDates({...dates,available:[...dates.available,changeDate]}) // Add to dates
                         
                         if(tempDates.includes(changeDate)){
                             let newChanges = changeLog

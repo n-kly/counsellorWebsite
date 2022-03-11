@@ -1,3 +1,5 @@
+// All the text fields for the form page 
+
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 

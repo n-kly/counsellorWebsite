@@ -1,3 +1,5 @@
+// Private route component 
+
 import {Route, Redirect} from 'react-router-dom'
 
 const PrivateRoute = ({component, path, admin}) => {

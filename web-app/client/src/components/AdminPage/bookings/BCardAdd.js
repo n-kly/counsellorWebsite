@@ -1,3 +1,6 @@
+// Add booking card template used to display upcoming bookings
+// Uses a modal that displays a form similiar to the form page
+
 import {useState} from "react";
 import Card from 'react-bootstrap/Card'
 import image from './undraw_No_data_re_kwbl.png'  

@@ -1,3 +1,5 @@
+// Iterate through bookings and use instances to display booking cards
+
 import {useEffect, useState} from "react";
 import BCard from "./BCard";
 import '../admin.css'
@@ -13,7 +15,7 @@ const Display = () => {
             return res;
         }
         
-        getDisplayData().then((res)=>setBooking(res.data.slice(0,3)))
+        getDisplayData().then((res)=>setBooking(res.data.slice(0,3))) // Only get the first 3 upcoming bookings
     }, [])
 
 	return (

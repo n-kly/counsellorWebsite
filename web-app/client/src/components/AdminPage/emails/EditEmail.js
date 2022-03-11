@@ -1,3 +1,5 @@
+// Same algorithm as used in AdminPage/bookings
+
 import { useEffect, useState } from "react"
 import axios from 'axios';
 import CCard from "./CCard";

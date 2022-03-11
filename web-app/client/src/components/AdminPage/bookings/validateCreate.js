@@ -1,3 +1,5 @@
+// Validation
+
 export default function validateInfo(bookingData,date) {
 	console.log(bookingData)
 	let errors = {};
