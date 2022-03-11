@@ -1,31 +1,14 @@
+import "../index.css"
+
 const Support = () => {
     return (
-        <div>
-            <div class="container">
-  <div class="row">
-    <div class="col">
-      1 of 3
-    </div>
-    <div class="col-6">
-      2 of 3 (wider)
-    </div>
-    <div class="col">
-      3 of 3
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      1 of 3
-    </div>
-    <div class="col-5">
-      2 of 3 (wider)
-    </div>
-    <div class="col">
-      3 of 3
-    </div>
-  </div>
-</div>
-        </div>
+      <div className="support">
+        If you have any questions please call or text:
+        <h6>+1 713 290 9025</h6>      
+        <br />
+        or email:
+        <h6>Paula.Cooper@houston.nae.school </h6>
+      </div>  
     )
 }
 

@@ -173,3 +173,12 @@
 .invalidText:hover {
 	cursor: auto;
 }
+
+.support {
+	text-align: center;
+	position: relative;
+	width: 38rem;
+	max-width: 100%;
+	padding: 15vh 1rem 1rem 1rem;
+	margin: auto;
+}
